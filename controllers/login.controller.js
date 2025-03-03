@@ -9,5 +9,9 @@ export const login = async (req, res) => {
         .query('SELECT * FROM users WHERE username = @username')
     
     isLogin = (data.recordset[0]?.password === req.body.password) 
-    res.status(200).json({result: isLogin})
+    if (isLogin) {
+        res.status(200).json({ isLogin: isLogin, user: data.recordset[0] })
+    } else {
+        res.status(400).json({ isLogin: isLogin, user: {} })
+    }
 };

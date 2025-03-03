@@ -23,10 +23,10 @@ export const postItem = async (req, res) => {
     .request()
     .input('name', sql.VarChar, req.body.name)
     .input('price', sql.Int, req.body.price)
-    .query(`INSERT INTO items (name, price) VALUES (@name, @price)`)
-    
-    console.log(data)
-    res.status(200).json({ successful: true })
+    .query('INSERT INTO items(name, price) OUTPUT Inserted.* VALUES (@name, @price)')
+
+    console.log(data.recordset)
+    res.status(200).json({ successful: true, inserted_items: data.recordset })
 };
 
 
