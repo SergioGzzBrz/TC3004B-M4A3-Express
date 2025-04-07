@@ -10,7 +10,12 @@ export const login = async (req, res) => {
     .input("username", sql.VarChar, req.body.username)
     .query("SELECT * FROM users WHERE username = @username");
 
+  
   const dbPassword = data.recordset[0]?.password;
+  if (!dbPassword) {
+    res.status(400).json({ isLogin: isLogin, user: {} });
+    return;
+  }
   const salt = dbPassword.slice(0, 10);
 
   const pepper = process.env.PEPPER;
